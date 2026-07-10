@@ -1,8 +1,8 @@
 # newforensicprogram
 using new found skills of SQL, hayabusa, pandas, python, ASCII, Json to create a threat detector
 
-# GREETINGS (71/10/26) ʕ•ﻌ•ʔ
-Today begins the day of working on a program for threat hunting! I think its relaly fun, and once you notice the signs it gets a lot easier. However, after a while, it seems like it gets repetiative, and you start to miss things! THEREFORE, i decided to combine a whole bunch of languages and existing programs to create a mini threat hunter, that hopefully with time can actually be used. I created a "windows event log" using json, and im just sort of having ai just come up with a whole bunch, some benign, and some malcious so i wont be able to recongize them. 
+# GREETINGS (7/10/26) ʕ•ﻌ•ʔ
+Today begins the day of working on a program for threat hunting! I think its really fun, and once you notice the signs it gets a lot easier. However, after a while, it seems like it gets repetiative, and you start to miss things! THEREFORE, i decided to combine a whole bunch of languages and existing programs to create a mini threat hunter, that hopefully with time can actually be used. I created a "windows event log" using json, and im just sort of having ai just come up with a whole bunch, some benign, and some malcious so i wont be able to recongize them. 
 
 # What is this progam called? ʕ•ﻌ•ʔ
 
