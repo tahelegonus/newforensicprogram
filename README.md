@@ -1,4 +1,4 @@
-# newforensicprogram
+# newforensicprogram???
 using new found skills of SQL, hayabusa, pandas, python, ASCII, Json to create a threat detector
 
 # GREETINGS (7/10/26) ʕ•ﻌ•ʔ
@@ -23,3 +23,7 @@ I wanted to make sure that the code actually runs, so i started off with just ev
 
 # pshunteralaysis.py (just realized i mispelled analysis) ʕ•ﻌ•ʔ
 So this my intial file for all my code for detection/analysis. It is very unorganized right now, and needs to be debugged, but i plan to sort of make a file for every specfic instance for each of the attributes, but it into a database, and whenver you load the program up,it should bring up very specfic details. Right now, its all over the place and certainly needs to be deubugged and formatted correctly! i think i have some pretty good code in here, espeucally sunce i used some resoruces to specfically spot out certain types of atrributes in event logs. When i finish up the intial analysis databse, it will be alot of fun to see how it gets transformed. 
+
+# UPDATES??
+
+i will update the program literally everyday, and as i do, ill keep the old versions, and i have labled these firsts ones as v1.0.0. So if you see that the new files are in a folder called v1.0.1, you know ive been coding away!
