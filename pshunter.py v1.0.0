@@ -1,0 +1,197 @@
+#i did a lot of editing on this file today, which is the actual database for the program, it still needs alot of tweaking, becasue
+# all the events i created and all the paramters do not seem to be working and arent connecting to the database, so they arent returning 
+# anything. so i will fix that tomrrow and hopefully get some results back! 
+
+#scroll to bottom to see results !!
+
+
+import json
+import sqlite3
+import os
+from tahelegonus import show_splash, analyze_events
+from pshunternalaysis import EVENT_IDS
+from rich.console import Console
+from rich.text import Text
+
+console = Console()
+show_splash()
+
+console.print(
+    Text(
+        f"Running from: {os.getcwd()}",
+        style="bold bright_magenta"
+    )
+)
+with open("scaryevent.json", "r", encoding= "utf-8") as file:
+    events = json.load(file)
+#analyze reuslts  
+results = analyze_events(events)
+
+console.print(
+    Text(
+       f"✓ Found {len(results)} matching event IDs",
+       style = "bold bright_magenta" 
+    )
+)
+
+for results in results:
+    console.print(
+        Text(
+            f"[{result['severity'].upper()}] Event ID{result['event_id']} - {result['description']}",
+            style= "bold bright_magenta"
+        )
+    )
+
+
+connection = sqlite3.connect("events.db")
+
+console.print(
+
+    Text(
+      f"Loaded events: {len(events)}", 
+      style ="bold bright_magenta"
+    )
+)
+
+
+
+console.print(
+    Text(
+        f"Database path: {os.path.abspath('events.db')}",
+        style="bold bright_magenta"
+    )
+)
+
+cursor = connection.cursor()
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS events (
+    event_id INTEGER,
+    timestamp TEXT,
+    computer_name TEXT,
+    channel TEXT,
+    provider TEXT,
+    level TEXT,
+    user TEXT,
+    domain TEXT,
+    logon_id TEXT,
+    process_name TEXT,
+    image_path TEXT,
+    parent_process TEXT,
+    parent_pid INTEGER,
+    pid INTEGER,
+    command_line TEXT,
+    registry_path TEXT,
+    network_ip TEXT,
+    network_port INTEGER,
+    action TEXT,
+    hash_sha256 TEXT,
+    signed TEXT,
+    severity TEXT,
+    description TEXT,
+    source TEXT
+)
+""")
+for event in events:
+    cursor.execute("""
+        INSERT INTO events (
+            event_id,
+            timestamp,
+            computer_name,
+            channel,
+            provider,
+            level,
+            user,
+            domain,
+            logon_id,
+            process_name,
+            image_path,
+            parent_process,
+            parent_pid,
+            pid,
+            command_line,
+            registry_path,
+            network_ip,
+            network_port,
+            action,
+            hash_sha256,
+            signed,
+            severity,
+            description,
+            source
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        event.get("event_id"),
+        event.get("timestamp"),
+        event.get("computer_name"),
+        event.get("channel"),
+        event.get("provider"),
+        event.get("level"),
+        event.get("user"),
+        event.get("domain"),
+        event.get("logon_id"),
+        event.get("process_name"),
+        event.get("image_path"),
+        event.get("parent_process"),
+        event.get("parent_pid"),
+        event.get("pid"),
+        event.get("command_line"),
+        event.get("registry_path"),
+        event.get("network_ip"),
+        event.get("network_port"),
+        event.get("action"),
+        event.get("hash_sha256"),
+        event.get("signed"),
+        event.get("severity"),
+        event.get("description"),
+        event.get("source")
+    ))
+
+connection.commit()
+connection.close()
+console.print(
+    Text(
+        "✓ Events saved successfully!",
+        style="bold bright_magenta"
+    )
+)
+
+#results after program is ran
+#not too sure why it copied this way but it looks fine in the terminal, i do want to center it however, but ill work on that later
+# as u can see, it dosent return any event ids, so im assuming something is wrong somewhere, but its does run and load everything up
+#which is great progress! 
+
+
+      ╭─────────────────────────────  TAHELEGONUS  ──────────────────────────────╮       
+      │                                                                          │       
+      │         ⡀⣤⡾⡿⠻⠛⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀          │       
+      │              ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡴⠛⠉⠙⣟⣷⡷⠶⠚⠛⠛⠛⠛⠛⠲⠶⣤⣀⠀⠀⠀⠀⠀⠀    │       
+      │          ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⠋⠀⢀⡴⠞⠙⡁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⢿⣖⣦⠶⠶⠶⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀  │       
+      │          ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡼⠉⠀⣰⠏⠁⠀⠸⢿⠟⡀⠄⣀⡀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠙⣧⡀⣀⣠⣨⣷⢤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀  │       
+      │          ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠉⠀⢰⠇⠀⠀⠀⠀⠀⠌⢤⠼⣟⠁⠈⠀⢸⣿⣿⠆⠀⠀⠀⠀⠈⣿⢟⡹⣍⣿⠀⠉⠳⣄⠀⠀⠀⠀⠀⠀⠀  │       
+      │          ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⠇⢀⣀⣿⣀⣀⣀⣂⠀⠀⠈⠐⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⡽⠿⠶⠟⠃⠀⠋⠓⢹⡆⠀⠀⠀⠀⠀⠀  │       
+      │             ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡴⠾⠛⠉⠉⠉⠀⠀⠈⠉⠙⠓⠶⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡾⠋⠁⠀⣀⠴⠀⠀⠀⠀⠀⣾⠁⠀     │       
+      │           ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡴⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠈⠙⢦⡀⠀⠀⠀⠀⠀⢀⣼⠛⠀⠀⡠⠞⠁⠀⠀⠀⠀⠀⣸⠇⠀⠀⠀⠀⠀   │       
+      │              ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣠⣰⠏⠀⠀⠀⠀⠑⠂⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⣾⠃⠀⣠⠋⠀⠀⠀⠀⠀⠀⠀⢠⡟      │       
+      │          ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⡟⠦⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣄⡀⠀⠀⠀⠀⠀⣾⡆⠀⠀⢸⡇⢀⡞⠁⠀⠀⠀⠀⠀⠀⠀⣠⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀  │       
+      │           ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⢾⣣⡦⡀⡀⠀⢀⠀⠀⠀⠀⠀⠀⢠⡾⡏⠷⣈⢹⣦⠀⠀⠀⢰⣗⡀⠀⠀⣸⡆⢨⠀⠀⠀⡠⠄⠀⠀⣠⡶⠋⠀⠀⠀⠀⠀⠀⠀    │       
+      │           ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠛⠉⠛⣦⣤⠀⠀⠀⠀⢠⡟⢰⡝⢳⢨⢸⡏⠀⠀⣴⣴⣿⠛⣥⠀⣿⢹⣦⣤⠀⠘⡔⣥⣴⡞⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀   │       
+      │                ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠛⠛⠒⠒⠚⣧⣐⣹⣒⣴⠿⠒⠛⠛⠉⠁⠘⠻⠿⠾⠃⠀⠀⠉⠉⠛⠙⠉⠁⠀⠀                               │       
+      │                                       │       
+      │                                                                       │       
+      │                                                                        │       
+      │                                                                          │       
+      │                                                                          │       
+      │                                                                          │       
+      ╰───────────────────────────────── v1.1.0 ─────────────────────────────────╯       
+Author: tahelegonus
+Engine: teddybear = JSON + pandas + hayabusa
+Started: 2026-07-13 14:37:28
+🌗  Ready!
+✓ Loaded 0 JSON files
+Running from: C:\Users\tahelegonus\Downloads\persistancehunter
+✓ Found 0 matching event IDs
+Loaded events: 103
+Database path: C:\Users\tahelegonus\Downloads\persistancehunter\events.db
+✓ Events saved successfully!
