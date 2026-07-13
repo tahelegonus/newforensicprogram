@@ -1,0 +1,1356 @@
+# i decided to get started on the intial analysis portion of the program, starting with the event ids. i created a python script of event ids and their channels, severities, and their descriptions. 
+#i decided to do this because i know evident ids are the easiest way to identify a artifact for malicious activity. So my plan is when you run the program 
+# the program should upload all the files, and then return all the ones that are malicious. in the future i want it to get more specifc, 
+# and you can ask it questions specficaly
+# there are a total of 103 events, so i didnt include all of them in this file 
+
+EVENT_IDS = {
+    
+  "7": {
+    "channel": "system",
+    "severity": "critical",
+    "description": "The device has a bad block."
+  },
+  "9": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "The device did not respond within the timeout period."
+  },
+  "17": {
+    "channel": "application",
+    "severity": "warning",
+    "description": "Unable to read performance data."
+  },
+  "41": {
+    "channel": "system",
+    "severity": "critical",
+    "description": "The system has rebooted without cleanly shutting down first."
+  },
+  "55": {
+    "channel": "system",
+    "severity": "error",
+    "description": "The file system structure on the disk is corrupted and unusable."
+  },
+  "57": {
+    "channel": "system",
+    "severity": "error",
+    "description": "The system failed to flush data to the transaction log. Corruption may occur."
+  },
+  "100": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A network connection or system communication event occurred."
+  },
+  "101": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A device or driver operation exceeded the expected time limit."
+  },
+  "129": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A reset was issued to the device due to timeout conditions."
+  },
+  "153": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "The I/O operation was retried due to a device error."
+  },
+  "157": {
+    "channel": "system",
+    "severity": "critical",
+    "description": "The disk has been unexpectedly removed."
+  },
+  "6005": {
+    "channel": "system",
+    "severity": "info",
+    "description": "The Event Log service was started."
+  },
+  "6006": {
+    "channel": "system",
+    "severity": "info",
+    "description": "The Event Log service was stopped."
+  },
+  "6008": {
+    "channel": "system",
+    "severity": "error",
+    "description": "The previous system shutdown was unexpected."
+  },
+  "7000": {
+    "channel": "system",
+    "severity": "error",
+    "description": "A service failed to start due to an error."
+  },
+  "7001": {
+    "channel": "system",
+    "severity": "error",
+    "description": "A service depends on another service that failed to start."
+  },
+  "7031": {
+    "channel": "system",
+    "severity": "error",
+    "description": "A service terminated unexpectedly."
+  },
+  "7034": {
+    "channel": "system",
+    "severity": "error",
+    "description": "A service terminated unexpectedly without reporting an error."
+  },
+  "1000": {
+    "channel": "application",
+    "severity": "error",
+    "description": "An application error occurred and caused a program failure."
+  },
+  "1001": {
+    "channel": "application",
+    "severity": "warning",
+    "description": "Windows Error Reporting detected an application or system failure."
+  },
+  "1002": {
+    "channel": "application",
+    "severity": "warning",
+    "description": "An application stopped responding and was terminated."
+  },
+  "1026": {
+    "channel": "application",
+    "severity": "error",
+    "description": ".NET Runtime encountered an unhandled exception."
+  },
+  "11707": {
+    "channel": "application",
+    "severity": "info",
+    "description": "An application installation completed successfully."
+  },
+  "11708": {
+    "channel": "application",
+    "severity": "error",
+    "description": "An application installation failed."
+  },
+  "2004": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "Windows detected that the system is running low on virtual memory."
+  },
+  "300": {
+    "channel": "application",
+    "severity": "warning",
+    "description": "A performance monitoring or application data collection issue occurred."
+  },
+  "10005": {
+    "channel": "application",
+    "severity": "error",
+    "description": "DCOM failed to start a service or application due to an error."
+  },
+  "10010": {
+    "channel": "application",
+    "severity": "warning",
+    "description": "A DCOM server did not register within the required timeout period."
+  },
+  "10016": {
+    "channel": "application",
+    "severity": "warning",
+    "description": "Application-specific permission settings do not grant permission for a DCOM component."
+  },
+  "1023": {
+    "channel": "application",
+    "severity": "error",
+    "description": "A Windows component or application encountered a runtime failure."
+  },
+  "26": {
+    "channel": "application",
+    "severity": "warning",
+    "description": "An application notification or system message was generated."
+  },
+  "33": {
+    "channel": "application",
+    "severity": "warning",
+    "description": "An application compatibility or activation issue occurred."
+  },
+  "59": {
+    "channel": "application",
+    "severity": "error",
+    "description": "An application activation or manifest processing error occurred."
+  },
+  "65": {
+    "channel": "application",
+    "severity": "warning",
+    "description": "An application deployment or activation issue occurred."
+}, 
+  "4624": {
+    "channel": "security",
+    "severity": "info",
+    "description": "An account was successfully logged on."
+  },
+  "4625": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "An account failed to log on."
+  },
+  "4634": {
+    "channel": "security",
+    "severity": "info",
+    "description": "An account was logged off."
+  },
+  "4647": {
+    "channel": "security",
+    "severity": "info",
+    "description": "A user initiated a logoff process."
+  },
+  "4648": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A logon was attempted using explicit credentials."
+  },
+  "4672": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "Special privileges were assigned to a new logon."
+  },
+  "4688": {
+    "channel": "security",
+    "severity": "info",
+    "description": "A new process was created."
+  },
+  "4689": {
+    "channel": "security",
+    "severity": "info",
+    "description": "A process was terminated."
+  },
+  "4697": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A service was installed on the system."
+  },
+  "4698": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A scheduled task was created."
+  },
+  "4699": {
+    "channel": "security",
+    "severity": "info",
+    "description": "A scheduled task was deleted."
+  },
+  "4700": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A scheduled task was enabled."
+  },
+  "4701": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A scheduled task was disabled."
+  },
+  "4702": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A scheduled task was updated."
+  },
+  "4720": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A user account was created."
+  },
+  "4722": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A user account was enabled."
+  },
+  "4723": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "An attempt was made to change an account password."
+  },
+  "4724": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "An attempt was made to reset an account password."
+  },
+  "4725": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A user account was disabled."
+  },
+  "4726": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A user account was deleted."
+  },
+  "4732": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A member was added to a security-enabled local group."
+  },
+  "4733": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A member was removed from a security-enabled local group."
+  },
+  "4740": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A user account was locked out."
+  },
+  "4768": {
+    "channel": "security",
+    "severity": "info",
+    "description": "A Kerberos authentication ticket was requested."
+  },
+  "4769": {
+    "channel": "security",
+    "severity": "info",
+    "description": "A Kerberos service ticket was requested."
+  },
+  "4771": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "Kerberos pre-authentication failed."
+  },
+  "4776": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "The domain controller attempted to validate account credentials."
+  },
+  "4798": {
+    "channel": "security",
+    "severity": "info",
+    "description": "A user's local group membership was enumerated."
+  },
+  "4799": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A security-enabled local group membership was enumerated."
+  },
+  "4907": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "Auditing settings on an object were changed."
+  },
+  "4946": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A Windows Firewall rule was added."
+  },
+  "4947": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A Windows Firewall rule was modified."
+  },
+  "4948": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A Windows Firewall rule was deleted."
+  },
+  "5152": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "Windows Filtering Platform blocked a network connection."
+  },
+  "5156": {
+    "channel": "security",
+    "severity": "info",
+    "description": "Windows Filtering Platform allowed a network connection."
+}, 
+  "4616": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "The system time was changed."
+  },
+  "4656": {
+    "channel": "security",
+    "severity": "info",
+    "description": "A handle to an object was requested."
+  },
+  "4657": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A registry value was modified."
+  },
+  "4658": {
+    "channel": "security",
+    "severity": "info",
+    "description": "The handle to an object was closed."
+  },
+  "4660": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "An object was deleted."
+  },
+  "4661": {
+    "channel": "security",
+    "severity": "info",
+    "description": "A handle to an object was requested with specific access rights."
+  },
+  "4662": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "An operation was performed on an Active Directory object."
+  },
+  "4663": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "An attempt was made to access an object."
+  },
+  "4664": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "An attempt was made to create a hard link."
+  },
+  "4670": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "Permissions on an object were changed."
+  },
+  "4673": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A privileged service was called."
+  },
+  "4674": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "An operation was attempted on a privileged object."
+  },
+  "4689": {
+    "channel": "security",
+    "severity": "info",
+    "description": "A process was terminated."
+  },
+  "4690": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "An attempt was made to duplicate a handle to an object."
+  },
+  "4691": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "Indirect access to an object was requested."
+  },
+  "4692": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "Backup of data protection master key was attempted."
+  },
+  "4693": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "Recovery of data protection master key was attempted."
+  },
+  "4719": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "System audit policy was changed."
+  },
+  "4735": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A security-enabled local group was changed."
+  },
+  "4738": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A user account was changed."
+  },
+  "4741": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A computer account was created."
+  },
+  "4742": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A computer account was changed."
+  },
+  "4743": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A computer account was deleted."
+  },
+  "4767": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A user account was unlocked."
+  },
+  "4781": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "The name of an account was changed."
+  },
+  "4794": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "An attempt was made to set the Directory Services Restore Mode password."
+  },
+  "4817": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "Auditing settings on a per-user basis were changed."
+  },
+  "4902": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "The Per-user audit policy table was created."
+  },
+  "4904": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "An attempt was made to register a security event source."
+  },
+  "4906": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "The CrashOnAuditFail value was changed."
+  },
+  "4912": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "Per-user audit policy was changed."
+},
+  "10000": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A network connection or network-related service encountered an issue."
+  },
+  "1014": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "DNS name resolution failed because no response was received from the configured DNS servers."
+  },
+  "1058": {
+    "channel": "system",
+    "severity": "error",
+    "description": "Group Policy processing failed because a required file or network path was unavailable."
+  },
+  "5719": {
+    "channel": "system",
+    "severity": "error",
+    "description": "The computer was unable to establish a secure session with a domain controller."
+  },
+  "6004": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A security-related notification was generated during system startup."
+  },
+  "7009": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A service did not start within the expected timeout period."
+  },
+  "7011": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A service request timed out while waiting for a response."
+  },
+  "7023": {
+    "channel": "system",
+    "severity": "error",
+    "description": "A service terminated with an error."
+  },
+  "7024": {
+    "channel": "system",
+    "severity": "error",
+    "description": "A service terminated with a service-specific error."
+  },
+  "7032": {
+    "channel": "system",
+    "severity": "error",
+    "description": "The Service Control Manager attempted to restart a service after failure."
+  },
+  "7036": {
+    "channel": "system",
+    "severity": "info",
+    "description": "A service entered a running or stopped state."
+  },
+  "7040": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "The startup type of a service was changed."
+  },
+  "7045": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A new service was installed on the system."
+  },
+  "5152": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "Windows Filtering Platform blocked a network connection."
+  },
+  "5154": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "Windows Filtering Platform permitted an application to listen on a port."
+  },
+  "5155": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "Windows Filtering Platform blocked an application from listening on a port."
+  },
+  "5156": {
+    "channel": "security",
+    "severity": "info",
+    "description": "Windows Filtering Platform allowed a network connection."
+  },
+  "5157": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "Windows Filtering Platform blocked a connection."
+  },
+  "5158": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "Windows Filtering Platform blocked a bind to a local port."
+  },
+  "5159": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "Windows Filtering Platform blocked an application from binding to a port."
+  },
+  "5379": {
+    "channel": "security",
+    "severity": "info",
+    "description": "Credential Manager credentials were read."
+  },
+  "5381": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "Credential Manager credentials were read from a vault."
+  },
+  "5382": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "Credential Manager credentials were modified."
+  },
+  "1149": {
+    "channel": "terminalservices",
+    "severity": "info",
+    "description": "A user authentication attempt succeeded through Remote Desktop Services."
+  },
+  "1158": {
+    "channel": "terminalservices",
+    "severity": "warning",
+    "description": "A Remote Desktop Services connection encountered a problem."
+  },
+  "21": {
+    "channel": "terminalservices",
+    "severity": "info",
+    "description": "Remote Desktop Services session logon succeeded."
+  },
+  "24": {
+    "channel": "terminalservices",
+    "severity": "info",
+    "description": "Remote Desktop Services session disconnected."
+  },
+  "25": {
+    "channel": "terminalservices",
+    "severity": "info",
+    "description": "Remote Desktop Services session reconnected."
+}, 
+  "1006": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "Windows Defender encountered an issue while scanning or protecting the system."
+  },
+  "1007": {
+    "channel": "system",
+    "severity": "info",
+    "description": "Windows Defender protection settings were changed."
+  },
+  "1008": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "Windows Defender protection was temporarily disabled or unavailable."
+  },
+  "1116": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "Microsoft Defender Antivirus detected malware or a potentially unwanted application."
+  },
+  "1117": {
+    "channel": "system",
+    "severity": "info",
+    "description": "Microsoft Defender Antivirus took action to remediate a detected threat."
+  },
+  "1118": {
+    "channel": "system",
+    "severity": "info",
+    "description": "Microsoft Defender Antivirus completed a remediation action."
+  },
+  "5001": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "Microsoft Defender Real-Time Protection was disabled."
+  },
+  "5004": {
+    "channel": "system",
+    "severity": "info",
+    "description": "Microsoft Defender Antivirus configuration settings changed."
+  },
+  "5007": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "Microsoft Defender Antivirus configuration was modified."
+  },
+  "5010": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "Microsoft Defender Antivirus scanning feature was disabled."
+  },
+  "5012": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "Microsoft Defender Antivirus configuration changed unexpectedly."
+  },
+  "3002": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "Microsoft Defender Antivirus encountered a scan or protection failure."
+  },
+  "3007": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "Microsoft Defender Antivirus encountered an issue updating security intelligence."
+  },
+  "4100": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "Windows Defender encountered a general protection issue."
+  },
+  "5008": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "Microsoft Defender Antivirus engine encountered an unexpected failure."
+  },
+  "10016": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A security permission issue occurred with a COM or DCOM application."
+  },
+  "1200": {
+    "channel": "system",
+    "severity": "info",
+    "description": "Windows Security service status information was recorded."
+  },
+  "1202": {
+    "channel": "system",
+    "severity": "error",
+    "description": "Security policy processing failed."
+  },
+  "1203": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "Security policy could not be applied due to configuration issues."
+  },
+  "6013": {
+    "channel": "system",
+    "severity": "info",
+    "description": "System uptime information was recorded."
+  },
+  "1074": {
+    "channel": "system",
+    "severity": "info",
+    "description": "A process initiated a system shutdown or restart."
+  },
+  "6009": {
+    "channel": "system",
+    "severity": "info",
+    "description": "The operating system version information was recorded during startup."
+  },
+  "6011": {
+    "channel": "system",
+    "severity": "info",
+    "description": "The computer name was changed."
+}, 
+  "12": {
+    "channel": "system",
+    "severity": "info",
+    "description": "The operating system started successfully."
+  },
+  "13": {
+    "channel": "system",
+    "severity": "info",
+    "description": "The operating system has shut down successfully."
+  },
+  "14": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "The system encountered a startup or shutdown timing issue."
+  },
+  "15": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A device initialization operation exceeded the expected time."
+  },
+  "100": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "The system experienced a performance or startup degradation event."
+  },
+  "101": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A device driver failed to load within the expected time period."
+  },
+  "102": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A device driver initialization operation exceeded the timeout limit."
+  },
+  "103": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A driver or service caused delays during system startup."
+  },
+  "104": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A service startup operation took longer than expected."
+  },
+  "109": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A kernel power management event occurred."
+  },
+  "129": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A reset was issued to a storage device due to timeout conditions."
+  },
+  "142": {
+    "channel": "system",
+    "severity": "error",
+    "description": "A hardware-related error was detected by the system."
+  },
+  "6008": {
+    "channel": "system",
+    "severity": "error",
+    "description": "The previous system shutdown was unexpected."
+  },
+  "41": {
+    "channel": "system",
+    "severity": "critical",
+    "description": "The system rebooted without a clean shutdown."
+  },
+  "42": {
+    "channel": "system",
+    "severity": "info",
+    "description": "The system entered sleep or low-power mode."
+  },
+  "1074": {
+    "channel": "system",
+    "severity": "info",
+    "description": "A process initiated a system restart or shutdown."
+  },
+  "1001": {
+    "channel": "system",
+    "severity": "error",
+    "description": "The system recovered from a bugcheck or blue screen failure."
+  },
+  "10016": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A DCOM permission issue occurred."
+  },
+  "2004": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "The system detected high memory usage or low virtual memory conditions."
+  },
+  "2001": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A performance monitoring component failed to collect system data."
+  },
+  "2003": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A performance counter provider failed to load correctly."
+  },
+  "6005": {
+    "channel": "system",
+    "severity": "info",
+    "description": "The Event Log service started."
+  },
+  "6006": {
+    "channel": "system",
+    "severity": "info",
+    "description": "The Event Log service stopped."
+  },
+  "7000": {
+    "channel": "system",
+    "severity": "error",
+    "description": "A service failed to start."
+  },
+  "7009": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A service startup timeout occurred."
+  },
+  "7011": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A service request timed out while waiting for a response."
+},  
+  "19": {
+    "channel": "system",
+    "severity": "info",
+    "description": "Windows Update successfully installed an update."
+  },
+  "20": {
+    "channel": "system",
+    "severity": "error",
+    "description": "Windows Update failed to install an update."
+  },
+  "21": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "Windows Update could not complete an update installation."
+  },
+  "22": {
+    "channel": "system",
+    "severity": "info",
+    "description": "Windows Update successfully downloaded an update."
+  },
+  "25": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "Windows Update failed to complete a restart required for updates."
+  },
+  "30": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "Windows Update encountered a configuration or compatibility issue."
+  },
+  "31": {
+    "channel": "system",
+    "severity": "error",
+    "description": "Windows Update failed due to an installation error."
+  },
+  "43": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "Windows Update detected an update installation problem."
+  },
+  "44": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "Windows Update encountered a servicing issue."
+  },
+  "1001": {
+    "channel": "application",
+    "severity": "warning",
+    "description": "Windows Error Reporting generated a report for an application or system failure."
+  },
+  "1004": {
+    "channel": "application",
+    "severity": "warning",
+    "description": "Windows Error Reporting failed to process a report."
+  },
+  "1008": {
+    "channel": "application",
+    "severity": "warning",
+    "description": "A performance counter provider failed to load."
+  },
+  "1022": {
+    "channel": "application",
+    "severity": "error",
+    "description": "An application installation or configuration operation failed."
+  },
+  "1033": {
+    "channel": "application",
+    "severity": "info",
+    "description": "An application installation or update completed successfully."
+  },
+  "11707": {
+    "channel": "application",
+    "severity": "info",
+    "description": "An application installation completed successfully."
+  },
+  "11708": {
+    "channel": "application",
+    "severity": "error",
+    "description": "An application installation failed."
+  },
+  "11724": {
+    "channel": "application",
+    "severity": "info",
+    "description": "An application was successfully removed."
+  },
+  "1603": {
+    "channel": "application",
+    "severity": "error",
+    "description": "A fatal error occurred during software installation."
+  },
+  "1618": {
+    "channel": "application",
+    "severity": "warning",
+    "description": "Another installation process is already running."
+  },
+  "20001": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A driver installation operation failed."
+  },
+  "20002": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A driver installation operation was blocked or incomplete."
+  },
+  "20003": {
+    "channel": "system",
+    "severity": "error",
+    "description": "A device driver failed during installation."
+  },
+  "219": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A driver failed to load during device initialization."
+  },
+  "20006": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A device installation operation requires additional action."
+  },
+  "4000": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A Windows servicing or update operation encountered an issue."
+  },
+  "20": {
+    "channel": "system",
+    "severity": "error",
+    "description": "Windows Update encountered an installation failure."
+},
+  "1058": {
+    "channel": "system",
+    "severity": "error",
+    "description": "Group Policy processing failed because Windows could not access a required file or network path."
+  },
+  "1030": {
+    "channel": "system",
+    "severity": "error",
+    "description": "Group Policy processing failed because domain resources could not be accessed."
+  },
+  "1129": {
+    "channel": "system",
+    "severity": "error",
+    "description": "Group Policy processing failed because network connectivity to a domain controller was unavailable."
+  },
+  "5719": {
+    "channel": "system",
+    "severity": "error",
+    "description": "The computer was unable to establish a secure session with a domain controller."
+  },
+  "5805": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "The computer account authentication failed."
+  },
+  "5722": {
+    "channel": "security",
+    "severity": "error",
+    "description": "The computer account failed to authenticate with the domain controller."
+  },
+  "5723": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "The security database contains an invalid computer account reference."
+  },
+  "4742": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A computer account was changed."
+  },
+  "4743": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A computer account was deleted."
+  },
+  "4768": {
+    "channel": "security",
+    "severity": "info",
+    "description": "A Kerberos authentication ticket was requested."
+  },
+  "4769": {
+    "channel": "security",
+    "severity": "info",
+    "description": "A Kerberos service ticket was requested."
+  },
+  "4770": {
+    "channel": "security",
+    "severity": "info",
+    "description": "A Kerberos service ticket was renewed."
+  },
+  "4771": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "Kerberos pre-authentication failed."
+  },
+  "4772": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A Kerberos authentication ticket request failed."
+  },
+  "4776": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "The domain controller attempted to validate account credentials."
+  },
+  "5807": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A computer attempted to authenticate from an unrecognized network address."
+  },
+  "5717": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A domain trust or secure channel issue occurred."
+  },
+  "1311": {
+    "channel": "directory_service",
+    "severity": "error",
+    "description": "Active Directory replication topology information is incorrect."
+  },
+  "1566": {
+    "channel": "directory_service",
+    "severity": "error",
+    "description": "Active Directory replication failed because a domain controller was unavailable."
+  },
+  "1864": {
+    "channel": "directory_service",
+    "severity": "warning",
+    "description": "Active Directory replication information is outdated."
+  },
+  "1988": {
+    "channel": "directory_service",
+    "severity": "error",
+    "description": "Active Directory replication encountered a lingering object."
+  },
+  "2042": {
+    "channel": "directory_service",
+    "severity": "critical",
+    "description": "Active Directory replication has exceeded the tombstone lifetime."
+  },
+  "2108": {
+    "channel": "directory_service",
+    "severity": "error",
+    "description": "Active Directory replication encountered a database or configuration error."
+  },
+  "2887": {
+    "channel": "directory_service",
+    "severity": "warning",
+    "description": "Active Directory detected insecure LDAP connections."
+  },
+  "2889": {
+    "channel": "directory_service",
+    "severity": "warning",
+    "description": "Active Directory detected an LDAP client using insecure authentication."
+  },
+  "4728": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A member was added to a security-enabled global group."
+  },
+  "4729": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A member was removed from a security-enabled global group."
+  },
+  "4730": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A security-enabled global group was deleted."
+  },
+  "4731": {
+    "channel": "security",
+    "severity": "warning",
+    "description": "A security-enabled local group was created."
+},
+  "1014": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "DNS name resolution failed because no response was received from configured DNS servers."
+  },
+  "4004": {
+    "channel": "dns_server",
+    "severity": "error",
+    "description": "The DNS server failed to complete initialization."
+  },
+  "4013": {
+    "channel": "dns_server",
+    "severity": "warning",
+    "description": "The DNS server is waiting for Active Directory initialization to complete."
+  },
+  "4015": {
+    "channel": "dns_server",
+    "severity": "error",
+    "description": "The DNS server encountered a critical Active Directory-related error."
+  },
+  "1056": {
+    "channel": "dhcp_server",
+    "severity": "error",
+    "description": "The DHCP service failed to start because the configured database or network resources were unavailable."
+  },
+  "1008": {
+    "channel": "dhcp_server",
+    "severity": "warning",
+    "description": "The DHCP service encountered a performance monitoring issue."
+  },
+  "1001": {
+    "channel": "dhcp_server",
+    "severity": "warning",
+    "description": "The DHCP service encountered a configuration or communication problem."
+  },
+  "4201": {
+    "channel": "system",
+    "severity": "info",
+    "description": "The network interface entered an operational state."
+  },
+  "4202": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "The network interface was disconnected."
+  },
+  "4205": {
+    "channel": "system",
+    "severity": "info",
+    "description": "The network interface changed state."
+  },
+  "4199": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "The TCP/IP interface encountered a configuration issue."
+  },
+  "4227": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "TCP/IP could not allocate a temporary port because the port limit was reached."
+  },
+  "4231": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "TCP/IP failed to allocate ports from the system pool."
+  },
+  "4226": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "TCP/IP reached the security limit imposed on the number of simultaneous connection attempts."
+  },
+  "20225": {
+    "channel": "rasclient",
+    "severity": "info",
+    "description": "A Remote Access connection was successfully established."
+  },
+  "20226": {
+    "channel": "rasclient",
+    "severity": "warning",
+    "description": "A Remote Access connection was terminated."
+  },
+  "20227": {
+    "channel": "rasclient",
+    "severity": "error",
+    "description": "A Remote Access connection failed due to authentication or configuration issues."
+  },
+  "20271": {
+    "channel": "rasclient",
+    "severity": "warning",
+    "description": "A Remote Access connection attempt failed."
+  },
+  "20272": {
+    "channel": "rasclient",
+    "severity": "warning",
+    "description": "A Remote Access connection encountered a negotiation problem."
+  },
+  "36874": {
+    "channel": "schannel",
+    "severity": "error",
+    "description": "A TLS connection failed because the client or server could not negotiate a secure protocol."
+  },
+  "36888": {
+    "channel": "schannel",
+    "severity": "error",
+    "description": "A fatal TLS alert was generated."
+  },
+  "36871": {
+    "channel": "schannel",
+    "severity": "warning",
+    "description": "A TLS handshake failure occurred while creating a secure connection."
+  },
+  "7036": {
+    "channel": "system",
+    "severity": "info",
+    "description": "A network-related service changed state."
+  },
+  "7040": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A network service startup configuration was changed."
+  },
+  "5000": {
+    "channel": "windows_firewall",
+    "severity": "info",
+    "description": "Windows Firewall service started successfully."
+  },
+  "5001": {
+    "channel": "windows_firewall",
+    "severity": "warning",
+    "description": "Windows Firewall service stopped or protection was disabled."
+  },
+  "5025": {
+    "channel": "windows_firewall",
+    "severity": "warning",
+    "description": "Windows Firewall service was stopped."
+  },
+  "50": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A delayed write operation failed."
+  },
+  "51": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "An error was detected on the device during a paging operation."
+  },
+  "55": {
+    "channel": "system",
+    "severity": "error",
+    "description": "The file system structure on the disk is corrupted and unusable."
+  },
+  "57": {
+    "channel": "system",
+    "severity": "error",
+    "description": "The system failed to flush data to the transaction log."
+  },
+  "98": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A volume recovery operation was started."
+  },
+  "140": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A file system filter driver encountered an issue."
+  },
+  "142": {
+    "channel": "system",
+    "severity": "error",
+    "description": "A hardware error was detected during a storage operation."
+  },
+  "153": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "The I/O operation was retried due to a device error."
+  },
+  "157": {
+    "channel": "system",
+    "severity": "critical",
+    "description": "The disk has been unexpectedly removed."
+  },
+  "158": {
+    "channel": "system",
+    "severity": "warning",
+    "description": "A disk has been detected as having a duplicate identifier."
+  },
+  "161": {
+    "channel": "system",
+    "severity": "error",
