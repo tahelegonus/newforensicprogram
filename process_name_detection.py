@@ -1,3 +1,45 @@
+import os
+
+from process_name import WINDOWS_CORE_PROCESSES
+
+from image_path import (
+    WINDOWS_LOLBIN_PATHS,
+    FAKE_WINDOWS_NAMES,
+    WINDOWS_SYSTEM_EXECUTABLES,
+    WINDOWS_SCRIPT_EXTENSIONS,
+    WINDOWS_COMMON_INSTALLERS
+)
+
+
+#helpers
+
+def add_detection(detections, name, *evidence):
+
+    detections.append({
+        "detection": name,
+        "evidence": [e for e in evidence if e]
+    })
+
+
+#helpers
+def is_core_process(process_name):
+
+    filename = os.path.basename(process_name).lower()
+
+    if filename in WINDOWS_CORE_PROCESSES:
+        return {
+            "matched": True,
+            "type": "Core Process",
+            "reason": WINDOWS_CORE_PROCESSES[filename]["description"]
+        }
+
+    return {
+        "matched": False,
+        "type": "Core Process",
+        "reason": None
+    }
+
+#lolbin from image paths 
 def is_lolbin(process_name):
 
     filename = os.path.basename(process_name).lower()
